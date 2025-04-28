@@ -662,3 +662,66 @@ function formatLastSeen(timestamp) {
     
     return lastSeen.toLocaleDateString();
 }
+// Шифрование сообщений
+function encryptMessage(message, secretKey) {
+    try {
+        return CryptoJS.AES.encrypt(message, secretKey).toString();
+    } catch (e) {
+        console.error('Ошибка шифрования:', e);
+        return message; // Возвращаем исходное сообщение в случае ошибки
+    }
+}
+
+// Дешифрование сообщений
+function decryptMessage(encryptedMessage, secretKey) {
+    try {
+        const bytes = CryptoJS.AES.decrypt(encryptedMessage, secretKey);
+        return bytes.toString(CryptoJS.enc.Utf8) || encryptedMessage;
+    } catch (e) {
+        console.error('Ошибка дешифрования:', e);
+        return encryptedMessage; // Возвращаем зашифрованное сообщение в случае ошибки
+    }
+}
+
+// Генерация секретного ключа для чата
+async function generateChatSecret(chatId, participantIds) {
+    // Получаем публичные ключи участников
+    const publicKeys = {};
+    for (const userId of participantIds) {
+        const userDoc = await db.collection('users').doc(userId).get();
+        if (userDoc.exists && userDoc.data().publicKey) {
+            publicKeys[userId] = userDoc.data().publicKey;
+        }
+    }
+    
+    // Генерируем случайный ключ для чата
+    const chatKey = CryptoJS.lib.WordArray.random(32).toString();
+    
+    // Шифруем ключ чата публичными ключами участников
+    const encryptedKeys = {};
+    for (const userId in publicKeys) {
+        encryptedKeys[userId] = encryptMessage(chatKey, publicKeys[userId]);
+    }
+    
+    // Сохраняем зашифрованные ключи в базе данных
+    await db.collection('chatSecrets').doc(chatId).set({
+        encryptedKeys: encryptedKeys
+    });
+    
+    return chatKey;
+}
+
+// Получение секретного ключа чата
+async function getChatSecret(chatId, userId) {
+    const chatSecretDoc = await db.collection('chatSecrets').doc(chatId).get();
+    if (!chatSecretDoc.exists) return null;
+    
+    const encryptedKey = chatSecretDoc.data().encryptedKeys[userId];
+    if (!encryptedKey) return null;
+    
+    // Получаем приватный ключ пользователя (в реальном приложении он должен храниться более безопасно)
+    const userPrivateKey = localStorage.getItem('privateKey');
+    if (!userPrivateKey) return null;
+    
+    return decryptMessage(encryptedKey, userPrivateKey);
+}
