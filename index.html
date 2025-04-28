@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Messenger</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">SecureChat</div>
+            <div class="user-menu">
+                <img id="user-avatar" src="images/default-avatar.png" alt="Avatar">
+                <span id="username-display">Гость</span>
+                <div class="dropdown-menu">
+                    <a href="profile.html">Профиль</a>
+                    <a href="#" id="logout-btn">Выйти</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="search-box">
+                    <input type="text" id="user-search" placeholder="Поиск пользователей...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="chats">Чаты</button>
+                    <button class="tab-btn" data-tab="groups">Группы</button>
+                    <button class="tab-btn" data-tab="contacts">Контакты</button>
+                </div>
+                
+                <div class="tab-content active" id="chats-tab">
+                    <ul id="chat-list">
+                        <!-- Список чатов будет загружен здесь -->
+                    </ul>
+                </div>
+                
+                <div class="tab-content" id="groups-tab">
+                    <button id="create-group-btn">Создать группу</button>
+                    <ul id="group-list">
+                        <!-- Список групп будет загружен здесь -->
+                    </ul>
+                </div>
+                
+                <div class="tab-content" id="contacts-tab">
+                    <button id="add-contact-btn">Добавить контакт</button>
+                    <ul id="contact-list">
+                        <!-- Список контактов будет загружен здесь -->
+                    </ul>
+                </div>
+            </aside>
+
+            <section class="chat-area">
+                <div class="chat-header">
+                    <h3 id="current-chat-name">Выберите чат</h3>
+                    <div id="chat-info">
+                        <span id="online-status"></span>
+                        <span id="last-seen"></span>
+                    </div>
+                </div>
+                
+                <div class="messages" id="messages">
+                    <!-- Сообщения будут загружены здесь -->
+                </div>
+                
+                <div class="message-input">
+                    <textarea id="message-input" placeholder="Напишите сообщение..."></textarea>
+                    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="add-contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Добавить контакт</h3>
+            <input type="text" id="contact-username" placeholder="@username">
+            <button id="confirm-add-contact">Добавить</button>
+        </div>
+    </div>
+
+    <div id="create-group-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Создать группу</h3>
+            <input type="text" id="group-name" placeholder="Название группы">
+            <textarea id="group-description" placeholder="Описание группы"></textarea>
+            <div id="group-members-selection">
+                <h4>Добавить участников:</h4>
+                <!-- Список контактов для выбора -->
+            </div>
+            <button id="confirm-create-group">Создать</button>
+        </div>
+    </div>
+</body>
+</html>
