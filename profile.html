@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - Secure Messenger</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/profile.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">SecureChat</div>
+            <div class="user-menu">
+                <img id="user-avatar" src="images/default-avatar.png" alt="Avatar">
+                <span id="username-display">Гость</span>
+                <div class="dropdown-menu">
+                    <a href="index.html">Главная</a>
+                    <a href="#" id="logout-btn">Выйти</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="avatar-container">
+                    <img id="profile-avatar" src="images/default-avatar.png" alt="Аватар">
+                    <label for="avatar-upload" class="avatar-upload-btn">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="avatar-upload" accept="image/*">
+                    </label>
+                </div>
+                <h1 id="profile-username">@username</h1>
+                <p id="profile-status">В сети</p>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-section">
+                    <h2>Информация</h2>
+                    <div class="profile-info">
+                        <div class="info-item">
+                            <span class="info-label">Email:</span>
+                            <span id="profile-email" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Зарегистрирован:</span>
+                            <span id="profile-created" class="info-value"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h2>О себе</h2>
+                    <textarea id="profile-bio" placeholder="Расскажите о себе..."></textarea>
+                    <button id="save-bio-btn">Сохранить</button>
+                </div>
+
+                <div class="profile-section">
+                    <h2>Изменить пароль</h2>
+                    <div class="password-change">
+                        <div class="input-group">
+                            <label for="current-password">Текущий пароль</label>
+                            <input type="password" id="current-password">
+                        </div>
+                        <div class="input-group">
+                            <label for="new-password">Новый пароль</label>
+                            <input type="password" id="new-password">
+                        </div>
+                        <div class="input-group">
+                            <label for="confirm-new-password">Подтвердите новый пароль</label>
+                            <input type="password" id="confirm-new-password">
+                        </div>
+                        <button id="change-password-btn">Изменить пароль</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
